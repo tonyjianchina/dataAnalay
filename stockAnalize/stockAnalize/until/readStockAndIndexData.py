@@ -35,3 +35,4 @@ def get_stock_data(stock_code ,index_code ,start_time ,end_time):
     index_line = list(index_data['close'])  # 指数序列
 
     return date_list ,capital_line ,return_line ,indexchange_line ,index_line
+

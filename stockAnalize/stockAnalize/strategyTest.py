@@ -24,7 +24,6 @@ def annual_return(capital_line,date_line):
 # annual_return(capital_line1,date_line1)
 
 # 计算最大回撤
-
 def max_draw_back(date_line,capital_line):
     new_frame = pd.DataFrame({'date':date_line,'capital':capital_line})
     new_frame.sort_values(by='date',inplace=True)
@@ -45,9 +44,29 @@ def max_draw_back(date_line,capital_line):
 
     print '最大回撤为%f,回撤开始时间为%s,回撤结束时间为%s' % (max_dd,start_date,end_date)
 
-    # 画图
-    new_frame.set_index('date',inplace=True)
-    new_frame.plot()
-    plt.show()
+    # # 画图
+    # new_frame.set_index('date',inplace=True)
+    # new_frame.plot()
+    # plt.show()
 
-max_draw_back(date_line1,capital_line1)
+# max_draw_back(date_line1,capital_line1)
+
+# 计算平均涨幅
+def average_change(date_line,return_line):
+    df = pd.DataFrame({'date':date_line,'change':return_line})
+    ave = df['change'].mean()
+    print '平均涨幅为：%f'%ave
+
+# average_change(date_line1,return_line1)
+
+
+# 上涨概率
+def prob_up(date_line, return_line):
+    df = pd.DataFrame({'date': date_line, 'change': return_line})
+
+    up = len(df[df['change'] > 0]['change'])
+    up_f = float(up)
+    titalCount = len(df['change'])
+    prob = up_f / titalCount
+    print format(prob,'.2%')  #以百分比方式输出
+prob_up(date_line1,return_line1)
