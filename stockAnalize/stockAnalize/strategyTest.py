@@ -1,6 +1,7 @@
 #-*-coding:utf-8-*-
 
 import  pandas as pd
+import numpy as  np
 import  matplotlib.pyplot as  plt
 from until import readStockAndIndexData as read
 
@@ -69,4 +70,39 @@ def prob_up(date_line, return_line):
     titalCount = len(df['change'])
     prob = up_f / titalCount
     print format(prob,'.2%')  #以百分比方式输出
-prob_up(date_line1,return_line1)
+# prob_up(date_line1,return_line1)
+
+# 计算最大涨跌天数
+def max_success_up(dateline,return_line):
+    df = pd.DataFrame({'date':dateline,'return':return_line})
+    df['up']=np.nan
+    # 将收益率大于零的up设为1
+    df.ix[df['return']>0,'up']=1
+    df.ix[df['return']<0,'up']=0
+    df['up'].fillna(method='ffill',inplace=True)
+    # print df
+
+    # 计算最大上涨下跌天数
+    sum_day = 1
+    df['max_success']=pd.Series(np.nan)
+    for i in range(len(df['up'])):
+        if i==0:
+            df.loc[i,'max_success']=sum_day
+        elif (df['up'].iloc[i]==df['up'].iloc[i-1]==1) or (df['up'].iloc[i]==df['up'].iloc[i-1]==0):
+            sum_day+=1
+            df.loc[i, 'max_success'] = sum_day
+        else:
+            sum_day=1
+            df.loc[i, 'max_success'] = sum_day
+
+    # 画图
+    # df.set_index('date',inplace=True)
+    # df['max_success'].plot()
+    # plt.show()
+
+    # 获取最大上涨下跌天数
+    max_up = df[df['up']==1].sort_values(by='max_success',ascending=False)['max_success'].iloc[0]
+    max_down = df[df['up'] == 0].sort_values(by='max_success', ascending=False)['max_success'].iloc[0]
+    print '最大上涨天数 ：%s,最大下跌天数：%s' %(max_up,max_down)
+
+# max_success_up(date_line1,return_line1)
