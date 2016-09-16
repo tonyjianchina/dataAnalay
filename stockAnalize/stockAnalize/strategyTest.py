@@ -106,3 +106,24 @@ def max_success_up(dateline,return_line):
     print '最大上涨天数 ：%s,最大下跌天数：%s' %(max_up,max_down)
 
 # max_success_up(date_line1,return_line1)
+
+
+# 计算收益波动率和贝塔值
+
+def volatility(date_line,return_line):
+    df = pd.DataFrame({'date':date_line,'rtn':return_line})
+    from math import sqrt
+    # 计算受益波动率
+    vol = df['rtn'].std() * sqrt(250)
+    print '受益波动率为：%s' % format(vol,'.2%')
+
+# volatility(date_line1,return_line1)
+
+def beta(date_line,return_line,indexreturn_line):
+    df = pd.DataFrame({'date':date_line,'rtn':return_line,'benchmark_rtn':indexreturn_line})
+    # 账户收益和基准收益的协方差除以基准收益的方差
+    b=df['rtn'].cov(df['benchmark_rtn'])/df['benchmark_rtn'].var()
+    print 'beta值是：%s' %b
+
+
+beta(date_line1)

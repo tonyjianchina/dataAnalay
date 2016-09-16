@@ -2,6 +2,6 @@
 import time
 from gmsdk.api import md
 import arrow
-import tushare
+import tushareTest
 
-print(tushare.__version__)
+print(tushareTest.__version__)
